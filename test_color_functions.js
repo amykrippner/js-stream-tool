@@ -223,6 +223,48 @@ const tests = [
         input: "red,green,blue,yellow,cyan,magenta",
         chain: ".split(',').map(color => color.toUpperCase()).filter(color => color.length > 4).compact().reverse().slice(0,2).map(color => color.substring(0,3)).join('-').toUpperCase().color('bgBlue').color('brightWhite').concat(' | ').concat('red,green,blue,yellow,cyan,magenta'.split(',').map(color => color.toUpperCase()).filter(color => color.length <= 4).first().toLowerCase().color('bgYellow').color('black'))",
         expected: "MAG-YEL | red"
+    },
+    {
+        name: "Ternary operator with true condition",
+        input: "hello",
+        chain: ".includes('h') ? .toUpperCase() : .toLowerCase()",
+        expected: "HELLO"
+    },
+    {
+        name: "Ternary operator with false condition",
+        input: "hello",
+        chain: ".includes('x') ? .toUpperCase() : .toLowerCase()",
+        expected: "hello"
+    },
+    {
+        name: "Ternary with complex operations",
+        input: "test,file.txt",
+        chain: ".includes('.txt') ? .split(',')[1].toUpperCase() : .split(',')[0].toLowerCase()",
+        expected: "FILE.TXT"
+    },
+    {
+        name: "Ternary returning null for filter behavior",
+        input: "nomatch",
+        chain: ".includes('x') ? .toUpperCase() : null",
+        expected: null  // Should not output anything when null is returned
+    },
+    {
+        name: "Ternary returning undefined for filter behavior",
+        input: "nomatch",
+        chain: ".includes('x') ? .toUpperCase() : undefined",
+        expected: null  // Should not output anything when undefined is returned
+    },
+    {
+        name: "Boolean false still works for filtering",
+        input: "test",
+        chain: ".includes('x')",  // Should return false, so no output
+        expected: null
+    },
+    {
+        name: "Boolean true still works for filtering",
+        input: "test",
+        chain: ".includes('t')",  // Should return true, so output original line
+        expected: "test"
     }
 ];
 
