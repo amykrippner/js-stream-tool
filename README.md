@@ -23,8 +23,11 @@ npm install -g js-stream-tool
 
 Or install directly from GitHub:
 ```bash
-npm install -g amelie/js-stream-tool
+npm install -g sayore/js-stream-tool
 ```
+
+## 🌐 GitHub Repository
+Find the source code and contribute at: [github.com/sayore/js-stream-tool](https://github.com/sayore/js-stream-tool)
 
 After installation, the `js` command will be available system-wide!
 

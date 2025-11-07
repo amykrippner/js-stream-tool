@@ -6,6 +6,10 @@
   "bin": {
     "js": "./js.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sayore/js-stream-tool.git"
+  },
   "scripts": {
     "test": "node test_color_functions.js"
   },
