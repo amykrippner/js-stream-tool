@@ -265,6 +265,108 @@ const tests = [
         input: "test",
         chain: ".includes('t')",  // Should return true, so output original line
         expected: "test"
+    },
+    {
+        name: "Highlight single string",
+        input: "This is a test string with test words",
+        chain: ".highlight('test', 'red')",
+        expected: "This is a test string with test words"  // with 'test' parts in red
+    },
+    {
+        name: "Highlight array of strings",
+        input: "apple banana cherry apple",
+        chain: ".highlight(['apple', 'cherry'], 'green')",
+        expected: "apple banana cherry apple"  // with 'apple' and 'cherry' parts in green
+    },
+    {
+        name: "Highlight regex pattern",
+        input: "Date: 2023-12-25 and 2024-01-01",
+        chain: ".highlightRegex(/\\d{4}-\\d{2}-\\d{2}/, 'blue')",
+        expected: "Date: 2023-12-25 and 2024-01-01"  // with dates in blue
+    },
+    {
+        name: "Highlight filenames",
+        input: "Open file.txt and document.pdf for more info",
+        chain: ".highlightFilenames('blue')",
+        expected: "Open file.txt and document.pdf for more info"  // with filenames in blue
+    },
+    {
+        name: "Highlight dates",
+        input: "Event on 2023-05-20 and meeting 12/25/2023",
+        chain: ".highlightDates('green')",
+        expected: "Event on 2023-05-20 and meeting 12/25/2023"  // with dates in green
+    },
+    {
+        name: "Highlight numbers",
+        input: "I have 123 apples and 45.67 oranges",
+        chain: ".highlightNumbers('yellow')",
+        expected: "I have 123 apples and 45.67 oranges"  // with numbers in yellow
+    },
+    {
+        name: "Highlight any with defaults",
+        input: "file.txt from 2023-12-25 with 123MB",
+        chain: ".highlightAny()",
+        expected: "file.txt from 2023-12-25 with 123MB"  // with all types highlighted in defaults
+    },
+    {
+        name: "Highlight any excluding types",
+        input: "file.txt from 2023-12-25 with 123MB",
+        chain: ".highlightAny(['dates'])",
+        expected: "file.txt from 2023-12-25 with 123MB"  // highlights all except dates
+    },
+    {
+        name: "When with string condition (matches)",
+        input: "hello123",
+        chain: ".when('123', str => str.color('red'))",
+        expected: "hello123"  // Should be colored red
+    },
+    {
+        name: "When with string condition (no match)",
+        input: "hello",
+        chain: ".when('123', str => str.color('red'))",
+        expected: "hello"  // Should remain unchanged
+    },
+    {
+        name: "When with regex condition (matches)",
+        input: "test123",
+        chain: ".when(/\\d+/, str => str.color('blue'))",
+        expected: "test123"  // Should be colored blue
+    },
+    {
+        name: "When with function condition (matches)",
+        input: "hello",
+        chain: ".when(str => str.length > 3, str => str.toUpperCase())",
+        expected: "HELLO"  // Should be uppercased
+    },
+    {
+        name: "WhenMatch with color operation",
+        input: "error in code",
+        chain: ".whenMatch('error', 'red')",
+        expected: "error in code"  // Should be colored red
+    },
+    {
+        name: "isNumber with valid number",
+        input: "123",
+        chain: ".isNumber()",
+        expected: "123"  // Should pass through (true condition)
+    },
+    {
+        name: "isNumber with invalid number",
+        input: "abc",
+        chain: ".isNumber()",
+        expected: null  // Should not pass (false condition)
+    },
+    {
+        name: "isInteger with integer",
+        input: "123",
+        chain: ".isInteger()",
+        expected: "123"  // Should pass through (true condition)
+    },
+    {
+        name: "isDate with valid date",
+        input: "2023-12-25",
+        chain: ".isDate()",
+        expected: "2023-12-25"  // Should pass through (true condition)
     }
 ];
 
@@ -302,7 +404,11 @@ function runTest(test) {
             const expectedOutput = test.expected ? test.expected : '';
             
             // For tests with color codes, we'll check if the plain text content matches
-            if (test.chain.includes('color(') || test.chain.includes('.color(')) {
+            if (test.chain.includes('color(') || test.chain.includes('.color(') || 
+                test.chain.includes('.highlight(') || test.chain.includes('.highlightRegex(') ||
+                test.chain.includes('.highlightFilenames(') || test.chain.includes('.highlightDates(') ||
+                test.chain.includes('.highlightNumbers(') || test.chain.includes('.highlightAny(') ||
+                test.chain.includes('.whenMatch(')) {
                 // Remove ANSI color codes for comparison if needed
                 const ansiRegex = /\x1b\[[0-9;]*m/g;
                 const actualWithoutAnsi = actualOutput.replace(ansiRegex, '');

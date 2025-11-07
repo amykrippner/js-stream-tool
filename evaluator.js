@@ -13,6 +13,9 @@ function evaluateChain(currentValue, chain) {
         
         return eval(`
             (function() {
+                const fs = require('fs');
+                const path = require('path');
+                
                 addExtensions(); // Add all extensions to prototypes
                 
                 // Make color function available globally for more complex operations
@@ -28,6 +31,9 @@ function evaluateChain(currentValue, chain) {
         // For simple method chains (original behavior)
         return eval(`
             (function() {
+                const fs = require('fs');
+                const path = require('path');
+                
                 addExtensions(); // Add all extensions to prototypes
                 
                 // Make color function available globally for more complex operations

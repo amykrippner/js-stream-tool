@@ -122,6 +122,36 @@ echo "Warning" | js '.color("bgYellow").color("black")'
 - **Filtering with null:** `.includes("a") ? .toUpperCase() : null` (only outputs when condition is true)
 - **Filtering with undefined:** Works the same as null
 
+### Highlight Functions:
+- **`.highlight(pattern, color)`** - Highlights occurrences of a string or array of strings
+- **`.highlightRegex(pattern, color)`** - Highlights text matching a regex pattern
+- **`.highlightFilenames(color)`** - Highlights filenames (defaults to blue)
+- **`.highlightDates(color)`** - Highlights dates (defaults to green)  
+- **`.highlightNumbers(color)`** - Highlights numbers (defaults to yellow)
+- **`.highlightAny([excludeTypes])`** - Automatically highlights common patterns with default colors
+  - Types: dates, filenames, numbers, emails, urls, ips
+  - Exclude specific types: `.highlightAny(['dates', 'numbers'])`
+
+### Conditional Functions:
+- **`.when(condition, operation)`** - Conditionally applies an operation if condition is true
+  - With regex: `.when(/\d+/, str => str.color("red"))` - color if contains digits
+  - With string: `.when("error", str => str.toUpperCase())` - uppercase if contains "error"  
+  - With function: `.when(str => str.length > 10, str => str.color("blue"))` - color if longer than 10
+- **`.whenMatch(pattern, operation)`** - Applies operation when pattern matches
+  - Pattern: string or regex
+  - Operation: function or color name
+
+### Validation Functions (.is*):
+- **`.isFile()`** - Returns true if string represents an existing file
+- **`.isDirectory()`** - Returns true if string represents an existing directory  
+- **`.isNumber()`** - Returns true if string can be converted to a valid number
+- **`.isInteger()`** - Returns true if string represents an integer
+- **`.isDate()`** - Returns true if string matches date formats (YYYY-MM-DD, MM/DD/YYYY, etc.)
+- **`.isEmail()`** - Returns true if string is a valid email
+- **`.isURL()`** - Returns true if string is a valid URL
+- **`.isIP()`** - Returns true if string is a valid IP address
+- **`.isFilename()`** - Returns true if string looks like a filename (has extension)
+
 ---
 
 ## 🧪 Examples That'll Blow Your Mind

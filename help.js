@@ -40,16 +40,44 @@ EXAMPLES:
   echo "hello" | js '$upper-color'
 
 CUSTOM FUNCTIONS ADDED:
-  .last() / .pop() - Returns the last element of an array.
-  .first()         - Returns the first element of an array.
-  .compact()       - Removes empty strings from an array.
-  .get(index)      - Returns the element at a specific index.
-  .color(color)    - Colors the text using ANSI color codes.
-  .prefix(text)    - Adds text to the beginning of the string.
-  .suffix(text)    - Adds text to the end of the string.
-  .toLength()      - Converts the string's length to a string representation.
-  .pre(text)       - Shorthand for .prefix(text).
-  .suf(text)       - Shorthand for .suffix(text).
+  .last() / .pop()    - Returns the last element of an array.
+  .first()            - Returns the first element of an array.
+  .compact()          - Removes empty strings from an array.
+  .get(index)         - Returns the element at a specific index.
+  .color(color)       - Colors the text using ANSI color codes.
+  .prefix(text)       - Adds text to the beginning of the string.
+  .suffix(text)       - Adds text to the end of the string.
+  .toLength()         - Converts the string's length to a string representation.
+  .pre(text)          - Shorthand for .prefix(text).
+  .suf(text)          - Shorthand for .suffix(text).
+
+HIGHLIGHT FUNCTIONS:
+  .highlight(pattern, color)      - Highlights occurrences of a string or array of strings.
+  .highlightRegex(pattern, color) - Highlights text matching a regex pattern.
+  .highlightFilenames(color)      - Highlights filenames (defaults to blue).
+  .highlightDates(color)          - Highlights dates (defaults to green).
+  .highlightNumbers(color)        - Highlights numbers (defaults to yellow).
+  .highlightAny([excludeTypes])   - Automatically highlights common patterns with default colors,
+                                    excluding specified types from highlighting.
+                                    Default types: dates, filenames, numbers, emails, urls, ips.
+
+CONDITIONAL FUNCTIONS:
+  .when(condition, operation)    - Conditionally applies operation if condition is true.
+                                   Condition can be regex, string, or function.
+                                   Operation is applied only when condition matches.
+  .whenMatch(pattern, operation) - Applies operation when pattern matches (string or regex).
+                                   Operation can be a function or color name.
+
+VALIDATION FUNCTIONS (.is*):
+  .isFile()       - Returns true if the string represents an existing file in the filesystem.
+  .isDirectory()  - Returns true if the string represents an existing directory in the filesystem.
+  .isNumber()     - Returns true if the string can be converted to a valid number.
+  .isInteger()    - Returns true if the string represents an integer.
+  .isDate()       - Returns true if the string matches common date formats (YYYY-MM-DD, MM/DD/YYYY, etc.).
+  .isEmail()      - Returns true if the string matches email format.
+  .isURL()        - Returns true if the string is a valid URL.
+  .isIP()         - Returns true if the string is a valid IP address (IPv4 or IPv6).
+  .isFilename()   - Returns true if the string looks like a filename (has extension).
 
 NOTE: Operations that return booleans (like .includes(), .startsWith()) act as filters:
   - TRUE: outputs the original line unchanged
