@@ -107,7 +107,15 @@ echo "Warning" | js '.color("bgYellow").color("black")'
 ### Prefix & Suffix Methods:
 - **`.prefix(text)` or `.pre(text)`** - Adds text to the beginning of the string
 - **`.suffix(text)` or `.suf(text)`** - Adds text to the end of the string
+- **`.toLength()`** - Converts the string's length to a string representation
 - **EXAMPLE:** `'hello'.pre('Say: ').suf('!')` → `Say: hello!`
+
+### Boolean vs Transformation Operations:
+- **Filter operations** (return boolean): `.includes()`, `.startsWith()`, `.endsWith()`, etc.
+  - `TRUE`: outputs the original line unchanged
+  - `FALSE`: suppresses output (no line printed)
+- **Transform operations** (return value): `.toUpperCase()`, `.toLength()`, `.split()`, etc.
+  - Outputs the transformed value instead of original line
 
 ### Conditional Operations:
 - **Ternary support:** `.includes("a") ? .toUpperCase() : .toLowerCase()`
@@ -233,46 +241,7 @@ While traditional Unix tools are implemented in highly optimized C code, js-stre
 
 ## 📝 Changelog
 
-### v1.0.2 - Ternary Support & Chain Composition Added
-- **NEW**: Added support for ternary operators in method chains
-- **EXAMPLE**: `.includes("a") ? .toUpperCase() : .toLowerCase()` now works
-- **NEW**: Chain composition with save/retrieve functionality
-- **EXAMPLE**: `js -s mychain '.toUpperCase().color("red")'` and `js '$mychain'`
-- **FEATURE**: Complex conditional expressions now supported
-- **BACKWARD COMPAT**: All existing functionality preserved
-
-### v1.0.3 - Prefix/Suffix Methods Added
-- **NEW**: Added `.prefix(text)` and `.suffix(text)` methods
-- **NEW**: Added shorthand `.pre(text)` and `.suf(text)` methods
-- **EXAMPLE**: `.pre("Filename: ").suf(" (found)")` adds text at beginning/end
-- **FEATURE**: Works with all existing functionality including ternary and saved chains
-
-### v1.0.2 - Ternary Support & Chain Composition Added
-- **NEW**: Added support for ternary operators in method chains
-- **EXAMPLE**: `.includes("a") ? .toUpperCase() : .toLowerCase()` now works
-- **NEW**: Chain composition with save/retrieve functionality
-- **EXAMPLE**: `js -s mychain '.toUpperCase().color("red")'` and `js '$mychain'`
-- **FEATURE**: Complex conditional expressions now supported
-- **BACKWARD COMPAT**: All existing functionality preserved
-
-### v1.0.1 - Performance Analysis Added  
-- **ADDED**: Performance benchmarks vs traditional Unix tools
-- **ADDED**: Installation options and GitHub repository link
-- **IMPROVED**: Package metadata and keywords
-
-### v1.0.0 - Initial Release
-- **CORE**: JavaScript method chaining for text stream processing
-- **COLORS**: ANSI color support with `.color()` method
-- **CUSTOM**: Array methods like `.last()`, `.first()`, `.compact()`, `.get()`
-- **CLI**: Direct command-line integration
-
-### v1.0.3 - Prefix/Suffix Methods & Null Filtering Added
-- **NEW**: Added `.prefix(text)` and `.suffix(text)` methods
-- **NEW**: Added shorthand `.pre(text)` and `.suf(text)` methods
-- **EXAMPLE**: `.pre("Filename: ").suf(" (found)")` adds text at beginning/end
-- **IMPROVED**: Null/undefined values in ternary operations now properly filter out lines
-- **EXAMPLE**: `.includes("a") ? .toUpperCase() : null` only outputs if condition is true
-- **FEATURE**: Works with all existing functionality including ternary and saved chains
+See the full changelog in [CHANGELOG.md](./CHANGELOG.md).
 
 ---
 
