@@ -77,6 +77,34 @@ All notable changes to this project will be documented in this file.
 - `.whenMatch("error", "red")` - color red when string contains "error"
 - `.when(str => str.length > 10, str => str.toUpperCase())` - uppercase if longer than 10 chars
 
+## [1.0.9] - 2025-11-07
+### Added
+- Created interactive REPL mode for real-time testing:
+  - Added `interactive.js` with Node.js REPL functionality
+  - Automatic piped data detection (uses first 3 piped lines)
+  - Interactive commands: `.test()`, `.run()`, `.data()`, `.help()`, etc.
+  - Real-time chain testing capabilities
+- Implemented comprehensive test suite reorganization:
+  - Created separate test files by category: `basic_operations.test.js`, `array_operations.test.js`, `color_highlight.test.js`, `conditional.test.js`, `validation.test.js`, `filter_ternary.test.js`, `long_chained.test.js`
+  - Moved from single monolithic test file to organized test structure
+  - Added `tests/run_tests.js` main test runner
+  - Increased test count to 64+ comprehensive tests across multiple categories
+- Implemented documentation restructuring:
+  - Created `README.md` simplification with cross-references
+  - Added `EXAMPLES.md` for comprehensive usage examples
+  - Added `FUNCTION_REFERENCE.md` for complete function documentation
+  - Added `PERFORMANCE.md` for detailed benchmarks
+  - Added `USAGE_GUIDE.md` for patterns and best practices
+  - Added `DIFFERENCES.md` for behavioral variations from normal JS
+  - Updated all cross-references in documentation
+- Added configuration documentation in `QWEN.md` with methodology details
+
+### Changed
+- Updated package.json to use new test runner
+- Restructured project architecture for better modularity
+- Improved error handling and user feedback in interactive mode
+- Enhanced test reliability and coverage across all functionality
+
 ## [1.0.8] - 2025-11-07
 ### Added
 - Added validation functions (.is* functions):

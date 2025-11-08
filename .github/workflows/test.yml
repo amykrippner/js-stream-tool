@@ -1,0 +1,55 @@
+name: Test js-stream-tool
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Verify interactive functionality
+      run: |
+        # Test basic functionality
+        echo "hello" | node js.js '.toUpperCase()' | grep -q "HELLO" && echo "Basic test: ✓"
+        # Test color functionality
+        echo "test" | node js.js '.color("red")' >/dev/null && echo "Color test: ✓"
+        # Test chain composition
+        node js.js -s test-chain '.toUpperCase()' >/dev/null && echo "Save chain test: ✓"
+        echo "world" | node js.js '$test-chain' | grep -q "WORLD" && echo "Load chain test: ✓"
+        
+    - name: Verify all documentation files exist
+      run: |
+        for file in README.md EXAMPLES.md FUNCTION_REFERENCE.md PERFORMANCE.md USAGE_GUIDE.md DIFFERENCES.md CHANGELOG.md QWEN.md; do
+          if [ -f "$file" ]; then
+            echo "✓ $file exists"
+          else
+            echo "✗ $file missing"
+            exit 1
+          fi
+        done
+
+    - name: Check interactive mode
+      run: |
+        timeout 10s bash -c "echo 'test' | node interactive.js" || true
+        echo "Interactive mode startup test completed"

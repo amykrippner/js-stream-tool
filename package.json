@@ -1,6 +1,6 @@
 {
   "name": "js-stream-tool",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A command-line utility that lets you use JavaScript's method chaining to process text streams piped from stdin",
   "main": "index.js",
   "bin": {
