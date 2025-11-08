@@ -87,6 +87,48 @@ const tests = [
         input: "missing",
         chain: ".switchCase({'hello': 'red', 'world': 'blue'})",
         expected: "missing"  // Should remain unchanged
+    },
+    {
+        name: "ColorIf with function condition (matches)",
+        input: "hello123",
+        chain: ".colorIf(str => str.length > 5, 'red')",
+        expected: "hello123"  // Should be colored red
+    },
+    {
+        name: "ColorIf with function condition (no match)",
+        input: "hi",
+        chain: ".colorIf(str => str.length > 5, 'red')",
+        expected: "hi"  // Should remain unchanged
+    },
+    {
+        name: "ColorIf with regex condition (matches)",
+        input: "test123",
+        chain: ".colorIf(/\d+/, 'blue')",
+        expected: "test123"  // Should be colored blue
+    },
+    {
+        name: "ColorIf with string condition (matches)",
+        input: "error message",
+        chain: ".colorIf('error', 'red')",
+        expected: "error message"  // Should be colored red
+    },
+    {
+        name: "ColorIfMatch with string pattern (matches)",
+        input: "error in code",
+        chain: ".colorIfMatch('error', 'red')",
+        expected: "error in code"  // Should be colored red
+    },
+    {
+        name: "ColorIfMatch with regex pattern (matches)",
+        input: "test123",
+        chain: ".colorIfMatch(/\d+/, 'green')",
+        expected: "test123"  // Should be colored green
+    },
+    {
+        name: "ColorIfMatch with no match",
+        input: "hello world",
+        chain: ".colorIfMatch('missing', 'red')",
+        expected: "hello world"  // Should remain unchanged
     }
 ];
 
@@ -131,7 +173,8 @@ function runTest(test) {
                 test.chain.includes('.highlightFilenames(') || test.chain.includes('.highlightDates(') ||
                 test.chain.includes('.highlightNumbers(') || test.chain.includes('.highlightAny(') ||
                 test.chain.includes('.when(') || test.chain.includes('.whenMatch(') || 
-                test.chain.includes('.switchCase(') || test.chain.includes('.switch(')) {
+                test.chain.includes('.switchCase(') || test.chain.includes('.switch(') ||
+                test.chain.includes('.colorIf(') || test.chain.includes('.colorIfMatch(')) {
                 // Remove ANSI color codes for comparison if needed
                 const ansiRegex = /\x1b\[[0-9;]*m/g;
                 const actualWithoutAnsi = actualOutput.replace(ansiRegex, '');

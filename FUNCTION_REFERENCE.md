@@ -256,7 +256,7 @@ echo "hello" | js '.when(str => str.length > 3, str => str.color("blue"), str =>
 ```
 
 ### `.whenMatch(pattern, operation)`
-Applies operation when pattern matches (string or regex).
+Applies operation when pattern matches (string or regex). **DEPRECATED** - use `.colorIfMatch()` instead.
 
 **Examples:**
 ```bash
@@ -267,6 +267,38 @@ echo "error in code" | js '.whenMatch("error", "red")'
 # With regex pattern
 echo "test123" | js '.whenMatch(/\d+/, str => str.toUpperCase())'
 # → TEST123 (uppercase because it matches digits)
+```
+
+### `.colorIf(condition, colorName)`
+Applies color if condition is true.
+
+**Examples:**
+```bash
+# With function condition
+echo "hello123" | js '.colorIf(str => str.length > 5, "red")'
+# → hello123 in red (if length > 5)
+
+# With regex condition
+echo "test123" | js '.colorIf(/\d+/, "red")'
+# → test123 in red (if contains digits)
+
+# With string condition
+echo "error message" | js '.colorIf("error", "red")'
+# → "error message" in red (if contains "error")
+```
+
+### `.colorIfMatch(pattern, colorName)`
+Applies color if pattern matches (string or regex).
+
+**Examples:**
+```bash
+# With string pattern
+echo "error in code" | js '.colorIfMatch("error", "red")'
+# → "error in code" in red (if contains "error")
+
+# With regex pattern
+echo "test123" | js '.colorIfMatch(/\d+/, "blue")'
+# → "test123" in blue (if matches digit pattern)
 ```
 
 ### `.switch(valueArray, functionArray)`
@@ -280,6 +312,38 @@ echo "red" | js '.switch(["red", "green", "blue"], [str => str.color("red"), str
 
 echo "hello" | js '.split(" ").get(0).switch(["test", "hello", "world"], [str => str.toUpperCase(), str => str.toLowerCase(), str => str.color("yellow")])'
 # → hello in lower case
+```
+
+### `.has(pattern)`
+"Go further or die" filter - returns the string if it contains the pattern, null otherwise.
+Use for filtering lines that match a pattern. Allows safe chaining operations on matching lines.
+Pattern can be string or regex.
+
+**Examples:**
+```bash
+# Filter lines containing "error"
+echo -e "error line\ngood line" | js '.has("error")'
+# → outputs: error line
+
+# Chain operations on matching lines (no more errors when chaining)
+echo -e "error log\ngood data" | js '.has("error").split(" ").last()'
+# → log (from "error log"), good data gets filtered out
+```
+
+### `.not(pattern)`
+"Go further or die" filter - returns the string if it does NOT contain the pattern, null otherwise.
+This is the opposite of `.has()`. Use for filtering lines that don't match a pattern.
+Pattern can be string or regex.
+
+**Examples:**
+```bash
+# Process lines that don't contain "error"
+echo -e "good line\nerror line" | js '.not("error")'
+# → outputs: good line
+
+# Chain operations on lines that don't contain pattern
+echo -e "file1.txt\nerror.log\nfile2.txt" | js '.not("error").toUpperCase()'
+# → FILE1.TXT and FILE2.TXT (in uppercase), filters out error.log
 ```
 
 ### `.switchCase(caseObject)`

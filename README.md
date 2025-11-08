@@ -96,10 +96,19 @@ For more examples, see [EXAMPLES.md](./EXAMPLES.md).
 - `.get(index)` - Get element at index
 - `.compact()` - Remove empty elements
 
-### Conditional Operations
+### Filtering Operations
 - `.includes()` - Filter by content
+- `.has(pattern)` - Filter by pattern (string or regex), returns original string or null
+- `.not(pattern)` - Filter by absence of pattern (string or regex), returns original string or null
 - Ternary: `.includes("a") ? .toUpperCase() : .toLowerCase()`
-- `.when()` - Conditional processing
+
+### Conditional Operations
+- `.when()` - Conditional processing with else clause
+- `.whenMatch()` - Pattern matching (deprecated in favor of colorIfMatch)
+- `.colorIf()` - Conditional coloring
+- `.colorIfMatch()` - Conditional coloring for pattern matching
+- `.switch()` - Switch-like value matching
+- `.switchCase()` - Object-based switch mapping
 - `.is*()` - Validation functions
 
 ### Highlight Functions

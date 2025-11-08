@@ -181,6 +181,27 @@ function addExtensions() {
         };
     }
     
+    // .has(pattern) - returns the string if it contains the pattern, or a proxy object that allows safe chaining otherwise
+    // This enables filtering behavior while supporting method chaining on the result
+    // .has(pattern) - returns the string if it contains the pattern, null otherwise
+    // This enables filtering behavior: null suppresses the line in the output stream
+    if (!String.prototype.has) {
+        String.prototype.has = function(pattern) {
+            let matches = false;
+            
+            if (pattern instanceof RegExp) {
+                matches = this.search(pattern) !== -1;
+            } else if (typeof pattern === 'string') {
+                matches = this.includes(pattern);
+            }
+            
+            if (matches) {
+                return this.valueOf();
+            }
+            return null;
+        };
+    }
+    
     // .whenMatch(pattern, operation) - applies operation if pattern matches
     if (!String.prototype.whenMatch) {
         String.prototype.whenMatch = function(pattern, operation) {
@@ -202,6 +223,36 @@ function addExtensions() {
                 }
             }
             return this.valueOf();
+        };
+    }
+    
+    // .colorIf(condition, colorName) - applies color if condition is true
+    // Condition can be: function (evaluate), regex (match), or string (includes)
+    if (!String.prototype.colorIf) {
+        String.prototype.colorIf = function(condition, colorName) {
+            let testResult = condition;
+            
+            if (typeof condition === 'function') {
+                testResult = condition(this);
+            } else if (condition instanceof RegExp) {
+                testResult = this.search(condition) !== -1;
+            } else if (typeof condition === 'string') {
+                testResult = this.includes(condition);
+            }
+            
+            if (testResult) {
+                const colorCode = colors[colorName] || colors.reset;
+                return `${colorCode}${this}${colors.reset}`;
+            }
+            return this.valueOf();
+        };
+    }
+    
+    // .colorIfMatch(pattern, colorName) - alias for colorIf with pattern matching
+    if (!String.prototype.colorIfMatch) {
+        String.prototype.colorIfMatch = function(pattern, colorName) {
+            // Just delegate to colorIf since it handles regex and string patterns already
+            return this.colorIf(pattern, colorName);
         };
     }
     
@@ -428,6 +479,61 @@ function addExtensions() {
         };
     }
     
+    if (!Array.prototype.when) {
+        Array.prototype.when = function(condition, trueOperation, falseOperation) {
+            // If condition is a function, call it with current value
+            let testResult = condition;
+            if (typeof condition === 'function') {
+                testResult = condition(this);
+            } else if (condition instanceof RegExp) {
+                // For arrays, check if any element matches the regex
+                testResult = this.some(item => typeof item === 'string' && item.search(condition) !== -1);
+            } else if (typeof condition === 'string') {
+                // For arrays, check if any element includes the string
+                testResult = this.some(item => typeof item === 'string' && item.includes(condition));
+            }
+            // If condition is boolean, use it directly
+            
+            // If condition is true, apply the trueOperation, otherwise apply falseOperation if provided
+            if (testResult) {
+                if (typeof trueOperation === 'function') {
+                    return trueOperation(this);
+                } else {
+                    return this; // Just return the original for now
+                }
+            } else if (falseOperation) {
+                // Apply the false operation if provided
+                if (typeof falseOperation === 'function') {
+                    return falseOperation(this);
+                } else {
+                    return this; // Just return the original for now
+                }
+            }
+            return this;
+        };
+    }
+    
+    // .not(pattern) - returns the string if it does NOT contain the pattern, null otherwise
+    // This is the opposite of .has() - it continues the chain if the pattern is NOT found
+    if (!String.prototype.not) {
+        String.prototype.not = function(pattern) {
+            let matches = false;
+            
+            if (pattern instanceof RegExp) {
+                matches = this.search(pattern) !== -1;
+            } else if (typeof pattern === 'string') {
+                matches = this.includes(pattern);
+            }
+            
+            // If pattern is NOT found, return the original string to continue the chain
+            // If pattern IS found, return null to stop the chain/filter the line
+            if (!matches) {
+                return this.valueOf();
+            }
+            return null;
+        };
+    }
+
     if (!Array.prototype.filterArray) {
         Array.prototype.filterArray = function(callback) {
             // This is a custom filter that works with our eval context

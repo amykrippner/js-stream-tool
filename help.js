@@ -39,6 +39,18 @@ EXAMPLES:
   # Use the saved chain
   echo "hello" | js '$upper-color'
 
+FILTERING FUNCTIONS:
+  .has(pattern)                - Returns the string if it contains the pattern, null otherwise.
+                                   Pattern can be string or regex. Use for filtering lines.
+                                   When using with chaining, wrap in ternary or use .when() to avoid errors
+                                   when pattern is not found.
+                                   Example: .has("error") - return line if contains "error", null if not
+                                   For safe chaining: .has("error") ? .split(" ").last() : null
+  .not(pattern)                - Returns the string if it does NOT contain the pattern, null otherwise.
+                                   This is the opposite of .has(). Use for filtering lines that don't match.
+                                   Pattern can be string or regex.
+                                   Example: .not("error") - continue chain if line doesn't contain "error", null if it does
+
 CUSTOM FUNCTIONS ADDED:
   .last() / .pop()    - Returns the last element of an array.
   .first()            - Returns the first element of an array.
@@ -66,12 +78,19 @@ CONDITIONAL FUNCTIONS:
                                    Condition can be regex, string, or function.
                                    Applies trueOperation when condition is true, falseOperation when false.
   .whenMatch(pattern, operation) - Applies operation when pattern matches (string or regex).
-                                   Operation can be a function or color name.
+                                   Operation can be a function or color name (deprecated - use colorIf).
   .switch(valueArray, functionArray) - Switch-like operation with value matching.
                                    Matches current value against valueArray and applies 
                                    corresponding function from functionArray.
   .switchCase(caseObject)        - Switch-like operation with object mapping.
                                    Maps current value to functions in caseObject.
+
+COLOR CONDITIONAL FUNCTIONS:
+  .colorIf(condition, colorName) - Applies color if condition is true.
+                                   Condition can be function, regex, or string.
+                                   Example: .colorIf(/\d+/, "red") - color if contains digits.
+  .colorIfMatch(pattern, colorName) - Applies color if pattern matches (string or regex).
+                                   Example: .colorIfMatch("error", "red") - color if contains "error".
 
 VALIDATION FUNCTIONS (.is*):
   .isFile()       - Returns true if the string represents an existing file in the filesystem.

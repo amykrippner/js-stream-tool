@@ -1,6 +1,6 @@
 const { addExtensions, colors, color, last, pop, first, compact, get } = require('./extensions');
 
-function evaluateChain(currentValue, chain) {
+function evaluateChain(currentValue, chain, originalLine = null) {
     // Check if the chain contains a ternary operator
     if (chain.includes('?') && chain.includes(':')) {
         // For ternary expressions, we evaluate them as complete expressions
@@ -42,7 +42,18 @@ function evaluateChain(currentValue, chain) {
                     return \`\${colorCode}\${text}\${colors.reset}\`;
                 };
                 
-                return currentValue${chain};
+                try {
+                    return currentValue${chain};
+                } catch (e) {
+                    // Specifically catch the error when calling methods on null
+                    if (e.message.includes('Cannot read properties of null')) {
+                        // This happens when chaining methods after .has() returns null
+                        // Return null to indicate the line should be filtered
+                        return null;
+                    }
+                    // Re-throw other errors
+                    throw e;
+                }
             })()
         `);
     }

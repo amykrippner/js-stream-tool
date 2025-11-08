@@ -5,7 +5,7 @@ function processLine(line, chain) {
     let shouldContinue = true;
 
     try {
-        const result = evaluateChain(currentValue, chain);
+        const result = evaluateChain(currentValue, chain, line);
 
         if (typeof result === 'boolean') {
             if (!result) {

@@ -4,3 +4,4 @@ node_modules/
 *.spec.js
 .git/
 .gitignore
+.QWEN
