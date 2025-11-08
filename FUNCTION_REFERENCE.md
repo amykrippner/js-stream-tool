@@ -237,22 +237,22 @@ echo "document.pdf" | js '.isFilename()'  # → outputs: document.pdf
 
 ## Conditional Functions
 
-### `.when(condition, operation)`
-Conditionally applies an operation if condition is true.
+### `.when(condition, trueOperation, falseOperation)`
+Conditionally applies operations with else clause.
 
 **Examples:**
 ```bash
 # With regex condition
-echo "hello123" | js '.when(/\d+/, str => str.color("red"))'
-# → hello123 in red (because it contains digits)
+echo "hello123" | js '.when(/\d+/, str => str.color("red"), str => str.color("gray"))'
+# → hello123 in red (if contains digits) or gray (if not)
 
 # With string condition
-echo "error log" | js '.when("error", str => str.toUpperCase())'
-# → ERROR LOG (only if it contains "error")
+echo "error log" | js '.when("error", str => str.toUpperCase(), str => str.toLowerCase())'
+# → ERROR LOG (if contains "error") or error log (if not)
 
 # With function condition
-echo "hello" | js '.when(str => str.length > 3, str => str.color("blue"))'
-# → HELLO in blue (because length > 3)
+echo "hello" | js '.when(str => str.length > 3, str => str.color("blue"), str => str.color("yellow"))'
+# → HELLO in blue (if longer than 3) or yellow (if not)
 ```
 
 ### `.whenMatch(pattern, operation)`
@@ -267,6 +267,32 @@ echo "error in code" | js '.whenMatch("error", "red")'
 # With regex pattern
 echo "test123" | js '.whenMatch(/\d+/, str => str.toUpperCase())'
 # → TEST123 (uppercase because it matches digits)
+```
+
+### `.switch(valueArray, functionArray)`
+Switch-like operation with value matching.
+
+**Examples:**
+```bash
+# Match different values to different operations
+echo "red" | js '.switch(["red", "green", "blue"], [str => str.color("red"), str => str.color("green"), str => str.color("blue")])'
+# → red in red color
+
+echo "hello" | js '.split(" ").get(0).switch(["test", "hello", "world"], [str => str.toUpperCase(), str => str.toLowerCase(), str => str.color("yellow")])'
+# → hello in lower case
+```
+
+### `.switchCase(caseObject)`
+Switch-like operation with object mapping.
+
+**Examples:**
+```bash
+# Map different values to different operations
+echo "error" | js '.switchCase({"error": "red", "warn": "yellow", "info": "blue"})'
+# → error in red color
+
+echo "hello" | js '.switchCase({"hello": str => str.toUpperCase(), "world": str => str.color("green")})'
+# → HELLO (uppercase because it matches)
 ```
 
 ---

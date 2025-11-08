@@ -62,11 +62,16 @@ HIGHLIGHT FUNCTIONS:
                                     Default types: dates, filenames, numbers, emails, urls, ips.
 
 CONDITIONAL FUNCTIONS:
-  .when(condition, operation)    - Conditionally applies operation if condition is true.
+  .when(condition, trueOperation, falseOperation) - Conditionally applies operations with else clause.
                                    Condition can be regex, string, or function.
-                                   Operation is applied only when condition matches.
+                                   Applies trueOperation when condition is true, falseOperation when false.
   .whenMatch(pattern, operation) - Applies operation when pattern matches (string or regex).
                                    Operation can be a function or color name.
+  .switch(valueArray, functionArray) - Switch-like operation with value matching.
+                                   Matches current value against valueArray and applies 
+                                   corresponding function from functionArray.
+  .switchCase(caseObject)        - Switch-like operation with object mapping.
+                                   Maps current value to functions in caseObject.
 
 VALIDATION FUNCTIONS (.is*):
   .isFile()       - Returns true if the string represents an existing file in the filesystem.

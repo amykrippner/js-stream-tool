@@ -96,9 +96,9 @@ function addExtensions() {
     
     // Add conditional methods to String prototype
     
-    // .when(condition, trueOperation) - conditionally apply an operation if condition is true
+    // .when(condition, trueOperation, falseOperation) - conditionally apply operations with else clause
     if (!String.prototype.when) {
-        String.prototype.when = function(condition, trueOperation) {
+        String.prototype.when = function(condition, trueOperation, falseOperation) {
             // If condition is a function, call it with current value
             let testResult = condition;
             if (typeof condition === 'function') {
@@ -110,7 +110,7 @@ function addExtensions() {
             }
             // If condition is boolean, use it directly
             
-            // If condition is true, apply the operation, otherwise return original value
+            // If condition is true, apply the trueOperation, otherwise apply falseOperation if provided
             if (testResult) {
                 if (typeof trueOperation === 'function') {
                     return trueOperation(this);
@@ -118,7 +118,65 @@ function addExtensions() {
                     // If it's a string operation like color name, apply it appropriately
                     return this.valueOf(); // Just return the original for now
                 }
+            } else if (falseOperation) {
+                // Apply the false operation if provided
+                if (typeof falseOperation === 'function') {
+                    return falseOperation(this);
+                } else {
+                    // If it's a string operation like color name, apply it appropriately
+                    return this.valueOf(); // Just return the original for now
+                }
             }
+            return this.valueOf();
+        };
+    }
+    
+    // .switch(valueArray, functionArray) - switch-like functionality with value matching
+    if (!String.prototype.switch) {
+        String.prototype.switch = function(valueArray, functionArray) {
+            // Validate inputs
+            if (!Array.isArray(valueArray) || !Array.isArray(functionArray)) {
+                return this.valueOf(); // Return original if not arrays
+            }
+            
+            // Find the index of the current value in the valueArray
+            const currentIndex = valueArray.indexOf(this.valueOf());
+            
+            // If found, apply the corresponding function from functionArray
+            if (currentIndex !== -1 && currentIndex < functionArray.length) {
+                const operation = functionArray[currentIndex];
+                if (typeof operation === 'function') {
+                    return operation(this);
+                }
+            }
+            
+            // If not found or no function matches, return original value
+            return this.valueOf();
+        };
+    }
+    
+    // .switchCase(caseObject) - enhanced switch with object mapping
+    if (!String.prototype.switchCase) {
+        String.prototype.switchCase = function(caseObject) {
+            // Validate input
+            if (typeof caseObject !== 'object' || caseObject === null) {
+                return this.valueOf(); // Return original if not an object
+            }
+            
+            // Check if the current value exists as a key in the caseObject
+            const currentValue = this.valueOf();
+            if (caseObject.hasOwnProperty(currentValue)) {
+                const operation = caseObject[currentValue];
+                if (typeof operation === 'function') {
+                    return operation(this);
+                } else if (typeof operation === 'string') {
+                    // If operation is a color name, apply color
+                    const colorCode = colors[operation] || colors.reset;
+                    return `${colorCode}${this}${colors.reset}`;
+                }
+            }
+            
+            // If no case matches, return original value
             return this.valueOf();
         };
     }

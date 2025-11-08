@@ -122,3 +122,19 @@ All notable changes to this project will be documented in this file.
 - `.isFile()` - returns true if file exists in filesystem
 - `.isNumber()` - returns true if string can be converted to number
 - `.isDate()` - returns true if string matches date formats
+
+## [1.1.0] - 2025-11-07
+### Added
+- Enhanced `.when()` function with else clause support:
+  - `.when(condition, trueOperation, falseOperation)` - conditional operations with else clause
+  - Added `falseOperation` parameter for negative condition handling
+- Added new switch functions for multiple value matching:
+  - `.switch(valueArray, functionArray)` - switch-like operation with value matching
+  - `.switchCase(caseObject)` - switch-like operation with object mapping
+- Added comprehensive tests for new conditional functions
+- Added documentation updates in help system and reference guides
+
+### Examples
+- `.when("test", str => str.toUpperCase(), str => str.toLowerCase())` - uppercase if contains "test", else lowercase
+- `.switch(["a", "b", "c"], [str => str.color("red"), str => str.color("green"), str => str.color("blue")])` - match value and apply corresponding function
+- `.switchCase({"error": "red", "warn": "yellow"})` - object-based switch mapping

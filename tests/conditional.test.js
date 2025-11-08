@@ -29,6 +29,18 @@ const tests = [
         expected: "HELLO"  // Should be uppercased
     },
     {
+        name: "When with else clause (true condition)",
+        input: "hello123",
+        chain: ".when(/\d+/, str => str.color('red'), str => str.color('blue'))",
+        expected: "hello123"  // Should be colored red because it contains digits
+    },
+    {
+        name: "When with else clause (false condition)",
+        input: "hello",
+        chain: ".when(/\d+/, str => str.color('red'), str => str.color('blue'))",
+        expected: "hello"  // Should be colored blue because it doesn't contain digits
+    },
+    {
         name: "WhenMatch with color operation",
         input: "error in code",
         chain: ".whenMatch('error', 'red')",
@@ -39,6 +51,42 @@ const tests = [
         input: "javascript",
         chain: ".when(str => str.includes('java'), str => str.toUpperCase())",
         expected: "JAVASCRIPT"  // Should be uppercased
+    },
+    {
+        name: "Switch with value matching (first case)",
+        input: "red",
+        chain: ".switch(['red', 'green', 'blue'], [str => str.color('red'), str => str.color('green'), str => str.color('blue')])",
+        expected: "red"  // Should be colored red
+    },
+    {
+        name: "Switch with value matching (middle case)",
+        input: "green",
+        chain: ".switch(['red', 'green', 'blue'], [str => str.color('red'), str => str.color('green'), str => str.color('blue')])",
+        expected: "green"  // Should be colored green
+    },
+    {
+        name: "Switch with no match",
+        input: "yellow",
+        chain: ".switch(['red', 'green', 'blue'], [str => str.color('red'), str => str.color('green'), str => str.color('blue')])",
+        expected: "yellow"  // Should remain unchanged
+    },
+    {
+        name: "SwitchCase with string value",
+        input: "error",
+        chain: ".switchCase({'error': 'red', 'warn': 'yellow', 'info': 'blue'})",
+        expected: "error"  // Should be colored red
+    },
+    {
+        name: "SwitchCase with function value",
+        input: "hello",
+        chain: ".switchCase({'hello': str => str.toUpperCase(), 'world': str => str.toLowerCase()})",
+        expected: "HELLO"  // Should be uppercased
+    },
+    {
+        name: "SwitchCase with no match",
+        input: "missing",
+        chain: ".switchCase({'hello': 'red', 'world': 'blue'})",
+        expected: "missing"  // Should remain unchanged
     }
 ];
 
@@ -82,7 +130,8 @@ function runTest(test) {
                 test.chain.includes('.highlight(') || test.chain.includes('.highlightRegex(') ||
                 test.chain.includes('.highlightFilenames(') || test.chain.includes('.highlightDates(') ||
                 test.chain.includes('.highlightNumbers(') || test.chain.includes('.highlightAny(') ||
-                test.chain.includes('.whenMatch(')) {
+                test.chain.includes('.when(') || test.chain.includes('.whenMatch(') || 
+                test.chain.includes('.switchCase(') || test.chain.includes('.switch(')) {
                 // Remove ANSI color codes for comparison if needed
                 const ansiRegex = /\x1b\[[0-9;]*m/g;
                 const actualWithoutAnsi = actualOutput.replace(ansiRegex, '');
