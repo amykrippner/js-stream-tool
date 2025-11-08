@@ -40,7 +40,7 @@ jobs:
         
     - name: Verify all documentation files exist
       run: |
-        for file in README.md EXAMPLES.md FUNCTION_REFERENCE.md PERFORMANCE.md USAGE_GUIDE.md DIFFERENCES.md CHANGELOG.md QWEN.md; do
+        for file in README.md EXAMPLES.md FUNCTION_REFERENCE.md PERFORMANCE.md USAGE_GUIDE.md DIFFERENCES.md CHANGELOG.md; do
           if [ -f "$file" ]; then
             echo "✓ $file exists"
           else
