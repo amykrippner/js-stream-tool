@@ -367,6 +367,42 @@ const tests = [
         input: "2023-12-25",
         chain: ".isDate()",
         expected: "2023-12-25"  // Should pass through (true condition)
+    },
+    {
+        name: "isFile with existing file",
+        input: "package.json",
+        chain: ".isFile()",
+        expected: "package.json"  // Should pass through (true condition)
+    },
+    {
+        name: "isDirectory with existing directory",
+        input: ".",
+        chain: ".isDirectory()",
+        expected: "."  // Should pass through (true condition)
+    },
+    {
+        name: "isEmail with valid email",
+        input: "test@example.com",
+        chain: ".isEmail()",
+        expected: "test@example.com"  // Should pass through (true condition)
+    },
+    {
+        name: "isURL with valid URL",
+        input: "https://example.com",
+        chain: ".isURL()",
+        expected: "https://example.com"  // Should pass through (true condition)
+    },
+    {
+        name: "isIP with valid IPv4",
+        input: "192.168.1.1",
+        chain: ".isIP()",
+        expected: "192.168.1.1"  // Should pass through (true condition)
+    },
+    {
+        name: "isFilename with valid filename",
+        input: "document.pdf",
+        chain: ".isFilename()",
+        expected: "document.pdf"  // Should pass through (true condition)
     }
 ];
 

@@ -11,7 +11,7 @@
     "url": "https://github.com/sayore/js-stream-tool.git"
   },
   "scripts": {
-    "test": "node test_color_functions.js"
+    "test": "node tests/run_tests.js"
   },
   "keywords": [
     "cli",
