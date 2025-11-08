@@ -175,7 +175,7 @@ The project includes comprehensive tests across multiple test suites organized b
 
 ## 🧩 Architecture
 
-Built entirely with Node.js built-in modules, no external dependencies. For technical details, see [QWEN.md](./QWEN.md).
+Built entirely with Node.js built-in modules, no external dependencies.
 
 ---
 
