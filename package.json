@@ -11,7 +11,8 @@
     "url": "https://github.com/sayore/js-stream-tool.git"
   },
   "scripts": {
-    "test": "node tests/run_tests.js"
+    "test": "node tests/run_tests.js",
+    "interactive": "node interactive.js"
   },
   "keywords": [
     "cli",
@@ -22,7 +23,7 @@
     "command-line",
     "utility"
   ],
-  "author": "",
+  "author": "Amelie Krippner",
   "license": "ISC",
   "type": "commonjs"
 }

@@ -5,7 +5,7 @@
 
 ---
 
-## 🚀 What is js-stream-tool?
+## 🚀 Overview
 
 **js** is a command-line utility that brings the full power of JavaScript's method chaining directly to your text streams. Pipe any text through **js** and unleash JavaScript's native array and string methods — with added superpowers!
 
@@ -16,51 +16,31 @@ Instead of memorizing complex sed/awk patterns, just write JavaScript you alread
 ## 🛠️ Installation
 
 ### Option 1: Global npm Installation (Recommended)
-Install directly from npm:
 ```bash
 npm install -g js-stream-tool
 ```
 
-Or install directly from GitHub:
+### Option 2: Install Directly from GitHub
 ```bash
 npm install -g sayore/js-stream-tool
 ```
 
-## 🌐 GitHub Repository
-Find the source code and contribute at: [github.com/sayore/js-stream-tool](https://github.com/sayore/js-stream-tool)
-
-After installation, the `js` command will be available system-wide!
-
-### Option 2: Local Installation
-Install as a local dependency:
+### Option 3: Local Installation
 ```bash
 npm install js-stream-tool
 ```
 
-Then use with npx:
+Then use with `npx`:
 ```bash
 echo "hello world" | npx js '.toUpperCase()'
 ```
 
-### Option 3: Manual Installation
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/js-stream-tool.git
-   cd js-stream-tool
-   ```
-
-2. **Install Node.js dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Make it globally available (optional):**
-   ```bash
-   # Add to your PATH or create a symlink
-   sudo ln -s $(pwd)/js.js /usr/local/bin/js
-   # Or alias it in your .bashrc/.zshrc
-   alias js='node $(pwd)/js.js'
-   ```
+### Option 4: Manual Installation
+```bash
+git clone https://github.com/sayore/js-stream-tool.git
+cd js-stream-tool
+npm install
+```
 
 ---
 
@@ -79,199 +59,114 @@ The syntax is simple and intuitive:
 
 ---
 
-## 🌈 Color Functions (NEW!)
+## 🔥 Quick Examples
 
-Add vibrant colors to your output! Use the `.color()` method or the standalone `color()` function:
-
-### String Method:
 ```bash
-echo "Hello World" | js '.color("red")'
+# Uppercase conversion
+echo "hello world" | js '.toUpperCase()'
+
+# Filter lines containing specific text
+ls -l | js '.includes(".txt")'
+
+# Add color to output
+echo "error" | js '.color("red")'
+
+# Combine operations
+echo "hello world" | js '.toUpperCase().color("green")'
+
+# Extract specific parts
+echo "name,age,city" | js '.split(",").get(0)'
 ```
 
-### Combined Operations:
-```bash
-echo "hello world" | js '.toUpperCase().color("blue")'
-```
-
-### Background Colors:
-```bash
-echo "Warning" | js '.color("bgYellow").color("black")'
-```
-
-### Available Colors:
-- **Basic:** `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`
-- **Bright:** `brightBlack`, `brightRed`, `brightGreen`, `brightYellow`, `brightBlue`, `brightMagenta`, `brightCyan`, `brightWhite` 
-- **Background:** `bgBlack`, `bgRed`, `bgGreen`, `bgYellow`, `bgBlue`, `bgMagenta`, `bgCyan`, `bgWhite`
-- **Styles:** `bold`, `dim`, `italic`, `underline`, `blink`, `reverse`, `hidden`, `strikethrough`
-
-### Prefix & Suffix Methods:
-- **`.prefix(text)` or `.pre(text)`** - Adds text to the beginning of the string
-- **`.suffix(text)` or `.suf(text)`** - Adds text to the end of the string
-- **`.toLength()`** - Converts the string's length to a string representation
-- **EXAMPLE:** `'hello'.pre('Say: ').suf('!')` → `Say: hello!`
-
-### Boolean vs Transformation Operations:
-- **Filter operations** (return boolean): `.includes()`, `.startsWith()`, `.endsWith()`, etc.
-  - `TRUE`: outputs the original line unchanged
-  - `FALSE`: suppresses output (no line printed)
-- **Transform operations** (return value): `.toUpperCase()`, `.toLength()`, `.split()`, etc.
-  - Outputs the transformed value instead of original line
-
-### Conditional Operations:
-- **Ternary support:** `.includes("a") ? .toUpperCase() : .toLowerCase()`
-- **Filtering with null:** `.includes("a") ? .toUpperCase() : null` (only outputs when condition is true)
-- **Filtering with undefined:** Works the same as null
-
-### Highlight Functions:
-- **`.highlight(pattern, color)`** - Highlights occurrences of a string or array of strings
-- **`.highlightRegex(pattern, color)`** - Highlights text matching a regex pattern
-- **`.highlightFilenames(color)`** - Highlights filenames (defaults to blue)
-- **`.highlightDates(color)`** - Highlights dates (defaults to green)  
-- **`.highlightNumbers(color)`** - Highlights numbers (defaults to yellow)
-- **`.highlightAny([excludeTypes])`** - Automatically highlights common patterns with default colors
-  - Types: dates, filenames, numbers, emails, urls, ips
-  - Exclude specific types: `.highlightAny(['dates', 'numbers'])`
-
-### Conditional Functions:
-- **`.when(condition, operation)`** - Conditionally applies an operation if condition is true
-  - With regex: `.when(/\d+/, str => str.color("red"))` - color if contains digits
-  - With string: `.when("error", str => str.toUpperCase())` - uppercase if contains "error"  
-  - With function: `.when(str => str.length > 10, str => str.color("blue"))` - color if longer than 10
-- **`.whenMatch(pattern, operation)`** - Applies operation when pattern matches
-  - Pattern: string or regex
-  - Operation: function or color name
-
-### Validation Functions (.is*):
-- **`.isFile()`** - Returns true if string represents an existing file
-- **`.isDirectory()`** - Returns true if string represents an existing directory  
-- **`.isNumber()`** - Returns true if string can be converted to a valid number
-- **`.isInteger()`** - Returns true if string represents an integer
-- **`.isDate()`** - Returns true if string matches date formats (YYYY-MM-DD, MM/DD/YYYY, etc.)
-- **`.isEmail()`** - Returns true if string is a valid email
-- **`.isURL()`** - Returns true if string is a valid URL
-- **`.isIP()`** - Returns true if string is a valid IP address
-- **`.isFilename()`** - Returns true if string looks like a filename (has extension)
+For more examples, see [EXAMPLES.md](./EXAMPLES.md).
 
 ---
 
-## 🧪 Examples That'll Blow Your Mind
+## 🧰 Available Functions
 
-### 📁 Filter & Extract Filenames
-```bash
-ls -l | js '.includes(".txt").split(" ").pop()'
-```
-*Filter lines containing ".txt" and get the filename*
+### String Operations
+- `.color(color)` - Colorize text
+- `.prefix(text)`/`.pre(text)` - Add prefix
+- `.suffix(text)`/`.suf(text)` - Add suffix
+- `.toLength()` - Get string length
 
-### 🔥 Transform & Uppercase
-```bash
-echo "2025-11-21" | js '.replaceAll("-","/").toUpperCase()'
-```
-*Replace dashes with slashes and uppercase: `2025/11/21`*
+### Array Operations  
+- `.first()` - Get first element
+- `.last()`/`.pop()` - Get last element
+- `.get(index)` - Get element at index
+- `.compact()` - Remove empty elements
 
-### 🎯 Advanced Filtering
-```bash
-cat config.ini | js '.trim().startsWith("#")==false'
-```
-*Remove comment lines (those starting with #)*
+### Conditional Operations
+- `.includes()` - Filter by content
+- Ternary: `.includes("a") ? .toUpperCase() : .toLowerCase()`
+- `.when()` - Conditional processing
+- `.is*()` - Validation functions
 
-### 🌈 Color Your Output
-```bash
-ls | js '.includes("js").toUpperCase().color("green")'
-```
-*Show only .js files, uppercase, in green*
+### Highlight Functions
+- `.highlight()` - Highlight specific text
+- `.highlightRegex()` - Highlight regex matches
+- `.highlightFilenames()` - Highlight filenames
+- `.highlightDates()` - Highlight dates
 
-### 🧮 Complex Data Processing
-```bash
-echo "apple,banana,cherry,date" | js '.split(",").filter(fruit => fruit.length > 4).map(fruit => fruit.toUpperCase()).join("-")'
-```
-*Filters long-named fruits and joins with dashes: `APPLE-BANANA-CHERRY`*
+For complete function reference, see [FUNCTION_REFERENCE.md](./FUNCTION_REFERENCE.md).
 
-### 🌈 Colored Complex Processing
-```bash
-echo "red,green,blue,yellow" | js '.split(",").filter(color => color.length > 3).map(color => color.toUpperCase().color("brightCyan")).join(" | ")'
-```
-*Filters and colors long color names: Colored "GREEN | YELLOW"*
+---
 
-### 🎨 Multi-Color Output
-```bash
-echo "data" | js '.concat(" - ").concat(color("processed", "green")).concat(" at ").concat(new Date().toString().color("yellow"))'
-```
-*Combine colored elements with timestamps*
+## 📚 Understanding Differences
 
-### 🧩 Chain Composition & Reusability
+This tool works differently from regular JavaScript. Important behavioral differences, common pitfalls, and best practices are covered in [DIFFERENCES.md](./DIFFERENCES.md).
+
+---
+
+## 🎨 Colors & Formatting
+
+Add vibrant ANSI colors to your output:
+
+**Available Colors:**
+- Basic: `red`, `green`, `blue`, `yellow`, `magenta`, `cyan`, `white`, etc.
+- Bright: `brightRed`, `brightGreen`, etc.
+- Background: `bgRed`, `bgBlue`, etc.
+- Styles: `bold`, `italic`, `underline`, etc.
+
+For color examples, see [EXAMPLES.md](./EXAMPLES.md).
+
+---
+
+## 🧩 Chain Composition
+
+Save and reuse complex operations:
+
 ```bash
-# Save a complex chain for reuse
+# Save a complex chain
 js -s upper-red '.toUpperCase().color("red")'
 
 # Use the saved chain
-echo "hello world" | js '$upper-red'
-
-# Save with conditional logic
-js -s filename-extractor '.includes("test") ? .split(" ").pop().pre("File: ") : null'
-
-# Use the conditional chain
-ls -la | js '$filename-extractor'
-
-# Combine prefix/suffix with colors
-echo "document.pdf" | js '.pre("Filename: ").suf(" (found)").color("green")'
+echo "hello" | js '$upper-red'
 ```
-*Save and reuse complex operations with ease*
 
 ---
 
-## 🧰 Custom Functions Added
+## 📈 Performance
 
-### Array Extensions
-- **`.last()` / `.pop()`** - Returns the last element of an array
-- **`.first()`** - Returns the first element of an array  
-- **`.compact()`** - Removes empty strings from an array
-- **`.get(index)`** - Returns the element at a specific index
-
-### Color Functions
-- **`.color(colorName)`** - Colors the text using ANSI color codes
-- **`color(text, colorName)`** - Standalone function to color text
+js-stream-tool prioritizes flexibility over raw speed. For performance comparison with traditional Unix tools, see [PERFORMANCE.md](./PERFORMANCE.md).
 
 ---
 
-## 🧪 Comprehensive Test Suite
+## 📖 Usage Patterns
 
-The project includes a robust test suite with **34+ tests** covering:
-- Basic string operations
-- Array method chaining
-- Color functions with various color options
-- Complex deep chains with multiple operations
-- Error handling and edge cases
-- Integration of multiple features
-
-Run tests with: `npm test`
+For common usage patterns and best practices, see [USAGE_GUIDE.md](./USAGE_GUIDE.md).
 
 ---
 
-## 📊 Performance Analysis
+## 🧪 Testing
 
-While **js-stream-tool** prioritizes flexibility and ease of use over raw speed, here's how it compares to traditional Unix tools:
-
-| Operation | js-stream-tool | sed | awk | grep |
-|-----------|----------------|-----|-----|------|
-| Uppercase (1K lines) | ~45ms | ~3ms | ~2ms | N/A |
-| Filter Pattern (1K lines) | ~31ms | ~2.5ms | ~2.4ms | ~2.7ms |
-| Split & Get Field (1K lines) | ~41ms | ~3ms | ~2.6ms | N/A |
-| Replace Pattern (1K lines) | ~39ms | ~2.6ms | ~2.4ms | N/A |
-| Length Filter (1K lines) | ~43ms | ~2.4ms | ~2.3ms | N/A |
-
-### Performance Summary:
-- **Unix tools (sed/awk/grep)** are **10-30x faster** than js-stream-tool
-- **js-stream-tool** provides full JavaScript expressiveness at a performance cost
-- **Best use case**: Development, prototyping, and complex operations requiring JavaScript logic
-- **Not ideal for**: Performance-critical production pipelines with large datasets
-
-While traditional Unix tools are implemented in highly optimized C code, js-stream-tool runs JavaScript through Node.js with eval. The trade-off is between speed and the ability to use the full power of JavaScript for text processing.
+The project includes comprehensive tests across multiple test suites organized by functionality. Run tests with: `npm test`
 
 ---
 
-## 📝 Changelog
+## 🧩 Architecture
 
-See the full changelog in [CHANGELOG.md](./CHANGELOG.md).
+Built entirely with Node.js built-in modules, no external dependencies. For technical details, see [QWEN.md](./QWEN.md).
 
 ---
 
@@ -284,6 +179,12 @@ Found a bug? Want to add a feature? PRs are welcome!
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+---
+
+## 📝 Changelog
+
+See the full changelog in [CHANGELOG.md](./CHANGELOG.md).
 
 ---
 
